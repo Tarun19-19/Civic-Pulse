@@ -1,8 +1,8 @@
 {
   "id": ".",
-  "name": "God's Eye View",
-  "short_name": "God's Eye",
-  "description": "Live spatial intelligence in the browser.",
+  "name": "CivicPulse Sight",
+  "short_name": "CivicPulse",
+  "description": "CivicPulse Sight — Real-time urban priority engine and spatial intelligence.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

@@ -1,11 +1,11 @@
 {
-  "name": "gods-eye-view",
+  "name": "civic-pulse-sight",
   "private": true,
-  "version": "0.2.1",
-  "description": "A real-time intelligence console for planet Earth — photorealistic 3D globe, live aircraft/ships/satellites/earthquakes/CCTV, and hands-free voice control. Runs in a browser.",
+  "version": "1.0.0",
+  "description": "CivicPulse Sight — Real-time 3D urban infrastructure triage & geospatial intelligence platform. Integrates regularized incident prioritization, open-source CCTV mesh, and live traffic telemetry.",
   "type": "module",
   "license": "MIT",
-  "author": "Bilawal Sidhu",
+  "author": "CivicPulse Sight Team",
   "homepage": "https://github.com/bilawalsidhu/gods-eye-view#readme",
   "repository": {
     "type": "git",
