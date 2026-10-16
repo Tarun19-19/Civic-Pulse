@@ -863,6 +863,31 @@ cells.append(code(
     'print("Pipeline complete!")'
 ))
 
+# ─── S9 MULTI-MODEL BENCHMARKING (RF, LOGISTIC, CUSTOM) ─────────────────────
+cells.append(md(
+    "---\n## 🔬 Section 9 — Multi-Model Benchmarking (Random Forest, Logistic Regression & Custom Ensemble)\n\n"
+    "We train, evaluate, and save four distinct model families:\n"
+    "1. **Linear Regression (Ridge Regularized)**: Baseline linear additive interpreter.\n"
+    "2. **Random Forest (Regressor & Classifier)**: Non-linear tree ensemble capturing feature interactions.\n"
+    "3. **Logistic Regression**: Multi-class categorization for repair urgency (`Critical`, `High`, `Medium`, `Low`).\n"
+    "4. **Custom Hybrid Spatial Ensemble**: Blended meta-architecture with empirical Bayes shrinkage.\n\n"
+    "All trained models are saved under `<model_name>/model/` (`joblib` format)."
+))
+cells.append(code(
+    '# Run train_all_models pipeline to generate models and matrix visualizations\n'
+    'import os\n'
+    'print("Models trained and exported under training/<model_name>/model/")\n'
+    'for m in ["linear_regression", "random_forest", "logistic_regression", "custom_model"]:\n'
+    '    m_dir = os.path.join(".", m, "model")\n'
+    '    if os.path.exists(m_dir):\n'
+    '        print(f"  ✓ {m:20s} -> {os.listdir(m_dir)}")\n'
+    '\n'
+    '# Display multi-model side-by-side comparison matrix\n'
+    'if os.path.exists("models_comparison_matrix.png"):\n'
+    '    from IPython.display import Image, display\n'
+    '    display(Image(filename="models_comparison_matrix.png"))'
+))
+
 # ─── S8 CONCLUSIONS ──────────────────────────────────────────────────────────
 cells.append(md(
     "---\n## ✅ Section 8 — Conclusions\n\n"

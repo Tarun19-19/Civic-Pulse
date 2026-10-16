@@ -1,0 +1,786 @@
+/* ==============================================================================
+   CIVICPULSE SIGHT — Urban Intelligence, Camera Hover Dossier & Admin UI
+   ============================================================================== */
+
+:root {
+  --cp-bg: rgba(10, 14, 24, 0.94);
+  --cp-card: rgba(16, 22, 38, 0.92);
+  --cp-border: rgba(39, 230, 255, 0.22);
+  --cp-border-glow: rgba(39, 230, 255, 0.45);
+  --cp-cyan: #27e6ff;
+  --cp-pink: #ff2e88;
+  --cp-amber: #ffb02e;
+  --cp-green: #38f28a;
+  --cp-purple: #a58bff;
+  --cp-text: #e2e8f5;
+  --cp-dim: #7f91b3;
+  --cp-mono: 'JetBrains Mono', monospace;
+  --cp-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Top Action Buttons in scene-chrome
+   -------------------------------------------------------------------------- */
+.civicpulse-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13, 19, 33, 0.85);
+  border: 1px solid var(--cp-border);
+  color: var(--cp-cyan);
+  font: 700 11px/1 var(--cp-mono);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+  white-space: nowrap;
+}
+.civicpulse-top-btn:hover {
+  background: rgba(39, 230, 255, 0.15);
+  border-color: var(--cp-cyan);
+  box-shadow: 0 0 12px rgba(39, 230, 255, 0.4);
+  transform: translateY(-1px);
+}
+.civicpulse-top-btn.btn-admin {
+  color: var(--cp-amber);
+  border-color: rgba(255, 176, 46, 0.35);
+}
+.civicpulse-top-btn.btn-admin:hover {
+  background: rgba(255, 176, 46, 0.15);
+  border-color: var(--cp-amber);
+  box-shadow: 0 0 12px rgba(255, 176, 46, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Hovering / Clicked Camera Detailed Report HUD
+   -------------------------------------------------------------------------- */
+#cp-camera-dossier {
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  width: 420px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 120px);
+  background: var(--cp-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(39, 230, 255, 0.15);
+  color: var(--cp-text);
+  font-family: var(--cp-sans);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(30px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#cp-camera-dossier.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Dossier Header */
+.cp-dossier-header {
+  padding: 14px 16px;
+  background: rgba(16, 22, 38, 0.85);
+  border-bottom: 1px solid var(--cp-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cp-dossier-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.cp-dossier-tag {
+  font: 700 10px var(--cp-mono);
+  color: var(--cp-cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: block;
+}
+.cp-dossier-name {
+  font: 700 15px/1.3 var(--cp-mono);
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cp-dossier-loc {
+  font: 11px var(--cp-mono);
+  color: var(--cp-dim);
+  margin-top: 2px;
+}
+.cp-dossier-actions {
+  display: flex;
+  gap: 6px;
+}
+.cp-btn-icon {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--cp-border);
+  color: var(--cp-dim);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+.cp-btn-icon:hover {
+  color: #fff;
+  border-color: var(--cp-cyan);
+  background: rgba(39, 230, 255, 0.15);
+}
+
+/* Dossier Scrollable Body */
+.cp-dossier-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cp-dossier-body::-webkit-scrollbar {
+  width: 5px;
+}
+.cp-dossier-body::-webkit-scrollbar-thumb {
+  background: var(--cp-border);
+  border-radius: 3px;
+}
+
+/* Urgency & Priority Card */
+.cp-urgency-card {
+  background: var(--cp-card);
+  border: 1px solid var(--cp-border);
+  border-radius: 9px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cp-urgency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 11px var(--cp-mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.cp-urgency-badge.Critical {
+  background: rgba(255, 46, 136, 0.18);
+  color: var(--cp-pink);
+  border: 1px solid var(--cp-pink);
+  animation: cp-pulse-red 1.8s infinite;
+}
+.cp-urgency-badge.High {
+  background: rgba(255, 176, 46, 0.18);
+  color: var(--cp-amber);
+  border: 1px solid var(--cp-amber);
+}
+.cp-urgency-badge.Medium {
+  background: rgba(39, 230, 255, 0.18);
+  color: var(--cp-cyan);
+  border: 1px solid var(--cp-cyan);
+}
+.cp-urgency-badge.Low {
+  background: rgba(56, 242, 138, 0.18);
+  color: var(--cp-green);
+  border: 1px solid var(--cp-green);
+}
+
+@keyframes cp-pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 46, 136, 0.4); }
+  50% { box-shadow: 0 0 10px 3px rgba(255, 46, 136, 0.5); }
+}
+
+.cp-score-gauge {
+  text-align: right;
+}
+.cp-score-val {
+  font: 700 24px/1 var(--cp-mono);
+  color: var(--cp-cyan);
+}
+.cp-score-label {
+  font: 10px var(--cp-mono);
+  color: var(--cp-dim);
+  text-transform: uppercase;
+}
+
+/* Metrics Grid */
+.cp-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.cp-metric-box {
+  background: var(--cp-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.cp-metric-title {
+  font: 10px var(--cp-mono);
+  color: var(--cp-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cp-metric-val {
+  font: 700 14px var(--cp-mono);
+  color: var(--cp-text);
+}
+
+/* Mini Charts Area */
+.cp-chart-section {
+  background: var(--cp-card);
+  border: 1px solid var(--cp-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.cp-chart-title {
+  font: 700 11px var(--cp-mono);
+  color: var(--cp-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Horizontal Bar Mini-Chart */
+.cp-bar-row {
+  display: grid;
+  grid-template-columns: 85px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  font-size: 11px;
+}
+.cp-bar-name {
+  color: var(--cp-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cp-bar-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.cp-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.cp-bar-count {
+  text-align: right;
+  font-weight: 700;
+  font-family: var(--cp-mono);
+  color: var(--cp-text);
+}
+
+/* Collapsible Complaints Section */
+.cp-complaints-section {
+  border-top: 1px solid var(--cp-border);
+  padding-top: 10px;
+}
+.cp-complaints-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--cp-cyan);
+  font: 700 11px var(--cp-mono);
+  cursor: pointer;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+.cp-complaint-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.cp-complaint-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.cp-complaint-tag {
+  font-weight: 700;
+  color: var(--cp-amber);
+}
+.cp-complaint-status {
+  font: 10px var(--cp-mono);
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(39, 230, 255, 0.15);
+  color: var(--cp-cyan);
+}
+.cp-complaint-img-thumb {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-top: 6px;
+  border: 1px solid var(--cp-border);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.cp-complaint-img-thumb:hover {
+  opacity: 0.85;
+}
+
+/* Dossier Footer Actions */
+.cp-dossier-footer {
+  padding: 10px 16px;
+  background: rgba(16, 22, 38, 0.85);
+  border-top: 1px solid var(--cp-border);
+  display: flex;
+  gap: 8px;
+}
+.cp-btn-primary {
+  flex: 1;
+  background: var(--cp-cyan);
+  color: #07090d;
+  font: 700 11px var(--cp-mono);
+  padding: 9px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.cp-btn-primary:hover {
+  background: #fff;
+  box-shadow: 0 0 12px rgba(39, 230, 255, 0.6);
+}
+.cp-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--cp-border);
+  color: var(--cp-cyan);
+  font: 700 11px var(--cp-mono);
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cp-btn-secondary:hover {
+  background: rgba(39, 230, 255, 0.18);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Citizen Complaint Submission Modal
+   -------------------------------------------------------------------------- */
+#cp-complaint-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+#cp-complaint-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cp-modal-window {
+  width: 580px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: var(--cp-bg);
+  border: 1px solid var(--cp-cyan);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(39, 230, 255, 0.25);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--cp-sans);
+  color: var(--cp-text);
+}
+.cp-modal-header {
+  padding: 14px 18px;
+  background: rgba(16, 22, 38, 0.9);
+  border-bottom: 1px solid var(--cp-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cp-modal-header h3 {
+  margin: 0;
+  font: 700 15px var(--cp-mono);
+  color: var(--cp-cyan);
+}
+.cp-modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.cp-form-group label {
+  font: 700 11px var(--cp-mono);
+  color: var(--cp-dim);
+  text-transform: uppercase;
+}
+.cp-input, .cp-select, .cp-textarea {
+  background: rgba(16, 22, 38, 0.8);
+  border: 1px solid var(--cp-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #fff;
+  font-family: var(--cp-mono);
+  font-size: 13px;
+  outline: none;
+}
+.cp-input:focus, .cp-select:focus, .cp-textarea:focus {
+  border-color: var(--cp-cyan);
+  box-shadow: 0 0 8px rgba(39, 230, 255, 0.4);
+}
+.cp-patch-notice {
+  background: rgba(39, 230, 255, 0.1);
+  border: 1px solid rgba(39, 230, 255, 0.3);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font: 11px var(--cp-mono);
+  color: var(--cp-cyan);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cp-live-calc-box {
+  background: rgba(255, 46, 136, 0.1);
+  border: 1px solid rgba(255, 46, 136, 0.35);
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cp-live-calc-title {
+  font: 10px var(--cp-mono);
+  color: var(--cp-dim);
+}
+.cp-live-calc-result {
+  font: 700 13px var(--cp-mono);
+  color: var(--cp-pink);
+}
+
+/* Image upload zone */
+.cp-drop-zone {
+  border: 2px dashed var(--cp-border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+}
+.cp-drop-zone:hover, .cp-drop-zone.dragover {
+  border-color: var(--cp-cyan);
+  background: rgba(39, 230, 255, 0.08);
+}
+.cp-drop-preview {
+  max-height: 120px;
+  border-radius: 6px;
+  margin-top: 8px;
+  display: none;
+  object-fit: cover;
+  border: 1px solid var(--cp-cyan);
+}
+.cp-sample-photos {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.cp-sample-thumb {
+  width: 50px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+  border: 1px solid var(--cp-border);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.cp-sample-thumb:hover, .cp-sample-thumb.selected {
+  opacity: 1;
+  border-color: var(--cp-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   Admin Command Drawer Panel
+   -------------------------------------------------------------------------- */
+#cp-admin-drawer {
+  position: fixed;
+  top: 60px;
+  left: -480px;
+  width: 460px;
+  max-width: 90vw;
+  height: calc(100vh - 80px);
+  background: var(--cp-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--cp-border);
+  box-shadow: 10px 0 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 176, 46, 0.15);
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease;
+  font-family: var(--cp-sans);
+  color: var(--cp-text);
+}
+#cp-admin-drawer.open {
+  left: 0;
+}
+#cp-admin-drawer.expanded {
+  width: 900px;
+}
+
+.cp-admin-header {
+  padding: 14px 18px;
+  background: rgba(16, 22, 38, 0.95);
+  border-bottom: 1px solid var(--cp-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cp-admin-header h2 {
+  margin: 0;
+  font: 700 14px var(--cp-mono);
+  color: var(--cp-amber);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cp-filter-chips {
+  padding: 10px 16px;
+  background: rgba(16, 22, 38, 0.5);
+  border-bottom: 1px solid var(--cp-border);
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+.cp-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--cp-border);
+  color: var(--cp-dim);
+  font: 700 10px var(--cp-mono);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cp-chip.active {
+  background: rgba(255, 176, 46, 0.2);
+  border-color: var(--cp-amber);
+  color: var(--cp-amber);
+}
+
+.cp-admin-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cp-admin-card {
+  background: var(--cp-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cp-admin-card:hover, .cp-admin-card.selected {
+  border-color: var(--cp-cyan);
+  background: rgba(39, 230, 255, 0.08);
+  box-shadow: 0 0 14px rgba(39, 230, 255, 0.2);
+}
+.cp-admin-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.cp-admin-road-title {
+  font: 700 13px var(--cp-mono);
+  color: #fff;
+}
+.cp-admin-card-stats {
+  display: flex;
+  gap: 12px;
+  font: 11px var(--cp-mono);
+  color: var(--cp-dim);
+  margin-top: 4px;
+}
+.cp-admin-fly-btn {
+  background: rgba(39, 230, 255, 0.15);
+  border: 1px solid var(--cp-cyan);
+  color: var(--cp-cyan);
+  font: 700 10px var(--cp-mono);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cp-admin-fly-btn:hover {
+  background: var(--cp-cyan);
+  color: #000;
+}
+
+/* Hologram Reticle for 3D Camera Targeting */
+.cp-camera-reticle {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--cp-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: cp-reticle-pulse 1.2s infinite;
+  box-shadow: 0 0 15px var(--cp-cyan);
+  display: none;
+  z-index: 500;
+}
+@keyframes cp-reticle-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.9; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.9; }
+}
+
+/* Fullscreen Expanded Dossier Modal */
+#cp-full-dossier-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 9, 13, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  color: var(--cp-text);
+  font-family: var(--cp-sans);
+}
+#cp-full-dossier-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cp-full-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--cp-border);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.cp-full-header h1 {
+  margin: 0;
+  font: 700 22px var(--cp-mono);
+  color: var(--cp-cyan);
+}
+.cp-full-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  overflow-y: auto;
+}
+@media (max-width: 900px) {
+  .cp-full-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Status badges and admin action buttons */
+.cp-btn-resolve {
+  background: rgba(56, 242, 138, 0.15);
+  border: 1px solid var(--cp-green);
+  color: var(--cp-green);
+  font: 700 10px var(--cp-mono);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cp-btn-resolve:hover {
+  background: var(--cp-green);
+  color: #000;
+  box-shadow: 0 0 10px rgba(56, 242, 138, 0.4);
+}
+.cp-btn-dispatch {
+  background: rgba(39, 230, 255, 0.15);
+  border: 1px solid var(--cp-cyan);
+  color: var(--cp-cyan);
+  font: 700 10px var(--cp-mono);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cp-btn-dispatch:hover {
+  background: var(--cp-cyan);
+  color: #000;
+  box-shadow: 0 0 10px rgba(39, 230, 255, 0.4);
+}
+.cp-complaint-status.status-resolved {
+  background: rgba(56, 242, 138, 0.15);
+  color: var(--cp-green);
+  border-color: rgba(56, 242, 138, 0.3);
+}
+.cp-complaint-status.status-assigned {
+  background: rgba(255, 176, 46, 0.15);
+  color: var(--cp-amber);
+  border-color: rgba(255, 176, 46, 0.3);
+}
+.cp-complaint-status.status-open {
+  background: rgba(255, 46, 136, 0.15);
+  color: var(--cp-pink);
+  border-color: rgba(255, 46, 136, 0.3);
+}
+.cp-top-bar-injected {
+  display: inline-flex;
+  gap: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+

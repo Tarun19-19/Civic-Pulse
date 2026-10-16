@@ -117,15 +117,14 @@ SmartCity/
 │   └── public_complaints.csv       # 8,000 citizen complaint submissions
 │
 ├── training/                       # Data Science & Regularization Pipeline
+│   ├── train_all_models.py         # Multi-Model ML training pipeline (Ridge, RF, Logistic, Custom)
+│   ├── models_comparison_matrix.png# 4-panel executive side-by-side model comparison matrix
+│   ├── linear_regression/          # Linear regression plots & model/linear_regression_model.joblib
+│   ├── random_forest/              # Feature importance, confusion matrix & model/random_forest_model.joblib
+│   ├── logistic_regression/        # ROC curves, confusion matrix & model/logistic_regression_model.joblib
+│   ├── custom_model/               # Hybrid spatial ensemble & model/custom_model.joblib
 │   ├── build_nb.py                 # Reproducible Python notebook generator script
-│   ├── smart_city_analysis.ipynb   # 66-cell interactive Jupyter Notebook with charts
-│   ├── 1_raw_distributions.png     # Section 1 EDA visualization
-│   ├── 2_outliers_boxplots.png     # Section 2 Z-score & IQR outlier charts
-│   ├── 3_preprocessing.png         # Section 3 Winsorization & scaling comparisons
-│   ├── 4_correlation_matrix.png    # Section 4 Feature collinearity heatmap
-│   ├── 5_model_comparison.png      # Section 5 CV RMSE & R² comparisons
-│   ├── 6_regularization_path.png   # Section 6 Ridge alpha tuning path
-│   └── 7_summary_dashboard.png     # Section 7 Executive KPI summary dashboard
+│   └── smart_city_analysis.ipynb   # Interactive Jupyter Notebook with Section 9 Multi-Model Comparison
 │
 ├── deploy.bat                      # Windows 1-Click Deployment Launcher (Auto-Installs & Launches Browser)
 ├── deploy.command                  # macOS 1-Click Double-Clickable Launcher (Terminal + Auto-Browser)
@@ -142,11 +141,17 @@ SmartCity/
 │   └── smartcity/                  # Urban Priority Engine UI & Data
 │       ├── index.html              # Interactive triage map & priority ranking UI
 │       ├── architecture.html       # Pipeline specification & methodology
+│       ├── training_plots/         # Mirrored model evaluation & comparison plots
 │       └── data/
 │           ├── locations.json      # Exported scored locations
+│           ├── priorities.json     # 1,000 municipal road sectors
+│           ├── model_inference.json# Exported ML model coefficients & inference contract
 │           └── validation.json     # Integrity checks and model metrics
 └── src/                            # Modular JavaScript source code
     ├── main.js                     # CesiumJS initialization & camera controllers
+    ├── civicpulse/                 # CivicPulse Intel Hub
+    │   ├── civicpulse-intel.js     # Camera dossier HUD, citizen complaints & admin console
+    │   └── civicpulse-ui.css       # Glassmorphism styling, reticle & expand modal
     ├── layers/                     # Data layer providers (CCTV, Traffic, ADS-B, FIRMS)
     ├── ui/                         # Dark sci-fi chrome, HUD, and dock templates
     └── voice/                      # Hands-free natural language map navigation
