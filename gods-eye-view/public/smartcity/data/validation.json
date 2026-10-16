@@ -1,0 +1,78 @@
+{
+ "test_2025-07-01": {
+  "Baseline: last-90d load": {
+   "spearman": -0.034,
+   "precision_at_100": 0.09,
+   "mae": null
+  },
+  "Baseline: lifetime load": {
+   "spearman": -0.024,
+   "precision_at_100": 0.05,
+   "mae": null
+  },
+  "Our priority score": {
+   "spearman": -0.012,
+   "precision_at_100": 0.09,
+   "mae": null
+  },
+  "Random": {
+   "spearman": 0.011,
+   "precision_at_100": 0.11,
+   "mae": null
+  },
+  "Ridge (L2)": {
+   "spearman": -0.031,
+   "precision_at_100": 0.09,
+   "mae": 3.564
+  },
+  "ElasticNet (L1+L2)": {
+   "spearman": null,
+   "precision_at_100": 0.1,
+   "mae": 3.555
+  },
+  "HistGB (L2, depth 3)": {
+   "spearman": -0.019,
+   "precision_at_100": 0.11,
+   "mae": 3.657
+  },
+  "_train_rows": 1000
+ },
+ "test_2025-10-01": {
+  "Baseline: last-90d load": {
+   "spearman": 0.032,
+   "precision_at_100": 0.09,
+   "mae": null
+  },
+  "Baseline: lifetime load": {
+   "spearman": 0.035,
+   "precision_at_100": 0.09,
+   "mae": null
+  },
+  "Our priority score": {
+   "spearman": 0.035,
+   "precision_at_100": 0.13,
+   "mae": null
+  },
+  "Random": {
+   "spearman": -0.027,
+   "precision_at_100": 0.05,
+   "mae": null
+  },
+  "Ridge (L2)": {
+   "spearman": -0.009,
+   "precision_at_100": 0.1,
+   "mae": 3.665
+  },
+  "ElasticNet (L1+L2)": {
+   "spearman": -0.011,
+   "precision_at_100": 0.13,
+   "mae": 3.675
+  },
+  "HistGB (L2, depth 3)": {
+   "spearman": -0.017,
+   "precision_at_100": 0.17,
+   "mae": 3.712
+  },
+  "_train_rows": 5000
+ }
+}

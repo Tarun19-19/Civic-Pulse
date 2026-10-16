@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Architecture — Smart City Priority Engine</title>
+<style>
+:root{--bg:#07090d;--card:#0d1219;--line:#1c2a3a;--tx:#d7e6f5;--dim:#7d96ad;--cy:#27e6ff;--mg:#ff2e88;--am:#ffb02e;--gr:#38f28a}
+@media (prefers-color-scheme:light){:root{--bg:#eef3f8;--card:#fff;--line:#c9d6e3;--tx:#0b1a2a;--dim:#51677d;--cy:#007c91;--mg:#c4075a;--am:#a35f00;--gr:#0a7d43}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 Inter,system-ui,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+header{padding:48px 20px 20px;max-width:1100px;margin:auto}h1{font:700 clamp(26px,5vw,44px)/1.1 "JetBrains Mono",monospace;margin:0 0 10px}h1 span{color:var(--cy)}
+nav a{color:var(--cy);margin-right:16px;text-decoration:none;font:600 12px "JetBrains Mono",monospace}
+main{max-width:1100px;margin:auto;padding:0 20px 80px}section{margin:34px 0}h2{font:600 13px "JetBrains Mono",monospace;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}.card b{color:var(--cy)}
+.diag{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;overflow-x:auto}
+svg{min-width:860px;width:100%;height:auto}svg text{font:600 12px "JetBrains Mono",monospace;fill:var(--tx)}svg .s{fill:var(--dim);font-weight:400;font-size:10px}
+.node{fill:var(--card);stroke:var(--line);stroke-width:1.5}.n1{stroke:var(--cy)}.n2{stroke:var(--mg)}.n3{stroke:var(--am)}.n4{stroke:var(--gr)}
+.flow{stroke:var(--cy);stroke-width:2;fill:none;stroke-dasharray:6 6;animation:d 1.2s linear infinite}@keyframes d{to{stroke-dashoffset:-12}}
+@media(prefers-reduced-motion:reduce){.flow{animation:none}}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--mg))}
+code{background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13px}
+.warn{border-color:var(--am)}
+</style></head><body>
+<header><nav><a href="index.html">← COMMAND CENTER</a><a href="/">GOD'S EYE VIEW</a></nav>
+<h1>How the <span>priority engine</span> works</h1>
+<p style="color:var(--dim);max-width:760px">Three synthetic city datasets flow through a leakage-safe pipeline into a transparent, regularised score. Every rank ships with its reasons, a confidence label and a list of what we still don't know — rendered on the God's Eye View 3D globe stack (CesiumJS).</p></header>
+<main>
+<section><h2>System flow</h2><div class="diag"><svg viewBox="0 0 1000 400" role="img" aria-label="Architecture diagram: CSV data to pipeline to JSON to globe app">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#27e6ff"/></marker></defs>
+<rect class="node n1" x="10" y="40" width="190" height="320" rx="12"/><text x="28" y="66">① RAW DATA</text>
+<text class="s" x="28" y="92">locations.csv (1,000)</text><text class="s" x="28" y="112">incidents.csv (10,000)</text><text class="s" x="28" y="132">public_complaints.csv (8,000)</text><text class="s" x="28" y="168">join key: location_id</text><text class="s" x="28" y="188">synthetic · sim. coords</text><text class="s" x="28" y="330">smartcity/data/raw/</text>
+<rect class="node n2" x="250" y="40" width="250" height="320" rx="12"/><text x="268" y="66">② PIPELINE (Python)</text>
+<text class="s" x="268" y="94">validate · dedupe · orphan check</text><text class="s" x="268" y="114">censor open durations · winsorise</text><text class="s" x="268" y="134">features at as-of date (no leakage)</text><text class="s" x="268" y="154">shrinkage → zone mean (k=3)</text><text class="s" x="268" y="174">recency decay (120-day half-life)</text><text class="s" x="268" y="194">percentile-normalised 6 components</text><text class="s" x="268" y="214">weighted score + reasons</text><text class="s" x="268" y="234">Poisson bootstrap ×200 → rank range</text><text class="s" x="268" y="254">confidence + missing-info flags</text><text class="s" x="268" y="290">time-split models (Ridge/EN/GBM)</text><text class="s" x="268" y="310">vs baselines → validation.json</text><text class="s" x="268" y="340">smartcity_pipeline.py · 2 notebooks</text>
+<rect class="node n3" x="550" y="40" width="190" height="320" rx="12"/><text x="568" y="66">③ STATIC JSON</text>
+<text class="s" x="568" y="94">priorities.json</text><text class="s" x="568" y="114">trends.json</text><text class="s" x="568" y="134">validation.json</text><text class="s" x="568" y="170">no backend, no keys</text><text class="s" x="568" y="190">deploys on any static host</text><text class="s" x="568" y="330">public/smartcity/data/</text>
+<rect class="node n4" x="790" y="40" width="200" height="320" rx="12"/><text x="808" y="66">④ WEB APP</text>
+<text class="s" x="808" y="94">CesiumJS 3D globe + columns</text><text class="s" x="808" y="114">ranked queue + filters</text><text class="s" x="808" y="134">why / confidence / missing</text><text class="s" x="808" y="154">trend monitor</text><text class="s" x="808" y="174">resolution-time dashboard</text><text class="s" x="808" y="194">intervention planner</text><text class="s" x="808" y="214">evidence & limits tab</text><text class="s" x="808" y="330">public/smartcity/index.html</text>
+<path class="flow" d="M200 200H245" marker-end="url(#a)"/><path class="flow" d="M500 200H545" marker-end="url(#a)"/><path class="flow" d="M740 200H785" marker-end="url(#a)"/>
+</svg></div></section>
+<section><h2>Priority score — six transparent components</h2><div class="card">
+<div>Severity-weighted incident load <b style="float:right">0.30</b></div><div class="bar"><i style="width:100%"></i></div>
+<div>Unresolved backlog / slow fixes <b style="float:right">0.20</b></div><div class="bar"><i style="width:66%"></i></div>
+<div>Public complaint pressure <b style="float:right">0.15</b></div><div class="bar"><i style="width:50%"></i></div>
+<div>Exposure: road, density, school, hospital, pedestrians <b style="float:right">0.15</b></div><div class="bar"><i style="width:50%"></i></div>
+<div>Injuries &amp; critical events <b style="float:right">0.10</b></div><div class="bar"><i style="width:33%"></i></div>
+<div>Worsening trend (last 90 days) <b style="float:right">0.10</b></div><div class="bar"><i style="width:33%"></i></div>
+<span style="color:var(--dim)">Weights are expert-set, visible in the app, and meant to be tuned by officials — not fitted to noise.</span></div></section>
+<section><h2>Design decisions</h2><div class="grid">
+<div class="card"><b>Regularised, not overfit.</b> Sparse locations are shrunk toward their zone mean; models use L2 / L1+L2 penalties.</div>
+<div class="card"><b>Leakage-safe.</b> Features use events before the as-of date; test targets come strictly after it. Train on earlier cutoffs, test later.</div>
+<div class="card"><b>Explainable.</b> Top-3 contributing components, the full breakdown, rank interval and "what's missing" appear for every location.</div>
+<div class="card"><b>Free to run.</b> Static JSON + CDN CesiumJS + OSM tiles. No API key, no server. Host on Vercel, Netlify, Cloudflare Pages or GitHub Pages.</div></div></section>
+<section><h2>Honest limits</h2><div class="card warn">The dataset is synthetic. Incident counts per location behave like Poisson(10) noise and are unrelated to location attributes; every model (and our score) scores about chance on a held-out quarter. We report that instead of claiming accuracy. The score is <b>evidence triage</b>; with real data the same pipeline would measure real lift. Coordinates are simulated and must not be read as real places.</div></section>
+<section><h2>Where it plugs into God's Eye View</h2><div class="grid">
+<div class="card"><b>Base project</b><br>Cloned unchanged: Vite + CesiumJS globe, live-data layers, Director, share links.</div>
+<div class="card"><b>Our module</b><br><code>/smartcity/</code> is served from <code>public/</code>, so <code>npm run dev</code> and <code>npm run build</code> both include it.</div>
+<div class="card"><b>Re-run data</b><br><code>python smartcity/pipeline/smartcity_pipeline.py</code> regenerates the JSON from the CSVs.</div></div></section>
+</main></body></html>

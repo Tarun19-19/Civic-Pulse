@@ -1,0 +1,2 @@
+{ "buildCommand": "npx vite build", "outputDirectory": "dist", "installCommand": "PUPPETEER_SKIP_DOWNLOAD=1 npm ci --no-audit --no-fund", "framework": null,
+  "redirects": [{ "source": "/smartcity", "destination": "/smartcity/index.html" }, { "source": "/smartcity/", "destination": "/smartcity/index.html" }] }
