@@ -128,6 +128,8 @@ SmartCity/
 │   └── 7_summary_dashboard.png     # Section 7 Executive KPI summary dashboard
 │
 ├── deploy.bat                      # Windows 1-Click Deployment Launcher (Auto-Installs & Launches Browser)
+├── deploy.command                  # macOS 1-Click Double-Clickable Launcher (Terminal + Auto-Browser)
+├── deploy.sh                       # Unix/macOS/Linux Shell Launcher Script
 ├── package.json                    # Project manifest, scripts, and dependencies
 ├── vite.config.js                  # Vite server & proxy configuration
 ├── index.html                      # 3D Cockpit HTML entrypoint (CesiumJS)
@@ -161,15 +163,24 @@ SmartCity/
 
 ---
 
-### ⚡ 1-Click Instant Deployment (Windows)
+### ⚡ 1-Click Instant Deployment
 
+#### 🪟 On Windows:
 Simply double-click or run:
 ```cmd
 deploy.bat
 ```
-This automated batch script will:
+
+#### 🍎 On macOS:
+Simply double-click in Finder:
+```bash
+deploy.command
+```
+*(Or in Terminal run: `./deploy.sh`)*
+
+Both launchers will automatically:
 1. Verify Node.js presence.
-2. Automatically run `npm install` if `node_modules` is absent.
+2. Automatically run `npm install` if `node_modules/` is absent.
 3. Print all live web links in the console.
 4. Auto-launch your default browser to [`http://localhost:4173/`](http://localhost:4173/).
 5. Start the live Cesium & Vite server.
