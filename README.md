@@ -127,23 +127,27 @@ SmartCity/
 │   ├── 6_regularization_path.png   # Section 6 Ridge alpha tuning path
 │   └── 7_summary_dashboard.png     # Section 7 Executive KPI summary dashboard
 │
-└── gods-eye-view/                  # 3D CesiumJS Cockpit & Intelligence Engine
-    ├── package.json                # Project manifest and scripts
-    ├── vite.config.js              # Vite server & proxy configuration
-    ├── index.html                  # 3D Cockpit HTML entrypoint
-    ├── public/
-    │   ├── manifest.webmanifest    # PWA configuration
-    │   └── smartcity/              # Urban Priority Engine UI
-    │       ├── index.html          # Interactive triage map & priority ranking UI
-    │       ├── architecture.html   # Pipeline specification & methodology
-    │       └── data/
-    │           ├── locations.json  # Exported scored locations
-    │           └── validation.json # Integrity checks and model metrics
-    └── src/                        # Modular JavaScript source code
-        ├── main.js                 # CesiumJS initialization & camera controllers
-        ├── layers/                 # Data layer providers (CCTV, Traffic, ADS-B, FIRMS)
-        ├── ui/                     # Dark sci-fi chrome, HUD, and dock templates
-        └── voice/                  # Hands-free natural language map navigation
+├── deploy.bat                      # Windows 1-Click Deployment Launcher (Auto-Installs & Launches Browser)
+├── package.json                    # Project manifest, scripts, and dependencies
+├── vite.config.js                  # Vite server & proxy configuration
+├── index.html                      # 3D Cockpit HTML entrypoint (CesiumJS)
+├── triage-audit.html               # Comprehensive standalone Triage & Validation Engine
+├── style.css                       # Global cockpit styles
+│
+├── public/                         # Public web assets
+│   ├── manifest.webmanifest        # PWA configuration
+│   ├── audit.html                  # Full Triage Audit web interface
+│   └── smartcity/                  # Urban Priority Engine UI & Data
+│       ├── index.html              # Interactive triage map & priority ranking UI
+│       ├── architecture.html       # Pipeline specification & methodology
+│       └── data/
+│           ├── locations.json      # Exported scored locations
+│           └── validation.json     # Integrity checks and model metrics
+└── src/                            # Modular JavaScript source code
+    ├── main.js                     # CesiumJS initialization & camera controllers
+    ├── layers/                     # Data layer providers (CCTV, Traffic, ADS-B, FIRMS)
+    ├── ui/                         # Dark sci-fi chrome, HUD, and dock templates
+    └── voice/                      # Hands-free natural language map navigation
 ```
 
 ---
@@ -157,26 +161,37 @@ SmartCity/
 
 ---
 
-### 1. Running the 3D Geospatial Console & Priority Engine
+### ⚡ 1-Click Instant Deployment (Windows)
 
-1. Navigate to the `gods-eye-view` directory:
-   ```bash
-   cd gods-eye-view
-   ```
+Simply double-click or run:
+```cmd
+deploy.bat
+```
+This automated batch script will:
+1. Verify Node.js presence.
+2. Automatically run `npm install` if `node_modules` is absent.
+3. Print all live web links in the console.
+4. Auto-launch your default browser to [`http://localhost:4173/`](http://localhost:4173/).
+5. Start the live Cesium & Vite server.
 
-2. Install dependencies:
+---
+
+### 💻 Manual CLI Deployment
+
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Launch the local development server:
+2. Launch the local development server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser:
+3. Open your browser:
    - **3D Geospatial Console (with CCTV & Traffic):** [`http://localhost:4173/`](http://localhost:4173/)
    - **Urban Priority Command Center:** [`http://localhost:4173/smartcity/index.html`](http://localhost:4173/smartcity/index.html)
+   - **Triage Audit & Model Validation:** [`http://localhost:4173/audit.html`](http://localhost:4173/audit.html)
    - **Triage Architecture Guide:** [`http://localhost:4173/smartcity/architecture.html`](http://localhost:4173/smartcity/architecture.html)
 
 ---
